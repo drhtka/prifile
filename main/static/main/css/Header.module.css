@@ -1,0 +1,46 @@
+header {
+    background: linear-gradient(to bottom left, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.5));
+    border-bottom: 1px solid transparent;
+    border-bottom-color: rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: space-around;
+    padding: 0px 100px 0 0;
+    font-family: 'Comfortaa', sans-serif;
+    color: #ffffff;
+
+}
+.tuk{
+    font-family: 'Comfortaa', sans-serif;
+    color: #ffffff !important;
+}
+header h1 {
+    cursor: pointer;
+    font-size: 42px;
+    font-weight: 700;
+
+}
+header h1 span {
+    color: #33E0FF;
+
+}
+header .nav {
+    display: flex;
+    align-items: center;
+}
+header .nav a {
+    cursor: help;
+    font-weight: bold;
+    margin-right: 30px;
+    color: white;
+
+}
+header .nav a:hover {
+    color: #33E0FF;
+    transition: 0.7s;
+}
+header div a{
+    text-decoration: none;
+}
+/*audio{*/
+/*    display: none;*/
+/*}*/

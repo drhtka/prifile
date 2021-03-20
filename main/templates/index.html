@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if messages %}
+    <div class="my_content-index">
+{#        <div>Ваши лайки</div>#}
+
+
+        {% for message in messages %}
+            {#                        https://docs.djangoproject.com/en/3.1/ref/contrib/messages/#}
+            <div ><li{% if message.tags %} class="{{ message.tags }}"{% endif %}><span class="mess-color">{{ message }}</span></li></div>
+        {% endfor %}
+        </div>
+    {% endif %}
+
+    {% endif %}
+    <div class='main'>
+        <h1><span>TUK</span>-TUK</h1>
+        <p>Здесь вы сможете найти сожителя или соседа для совместной аренды квартиры или комнаты.</p>
+        <p>«TUK-TUK»— это интернет-проект по совместной аренде жилья.</p>
+    </div>
+{% endblock content %}

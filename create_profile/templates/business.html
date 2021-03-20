@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Бизнес{% endblock title %}
+{% block content %}
+    <body class="mybody body_font">
+<form method="post" action="." enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="back-swarc">
+        <div class="child-back-swarc">
+
+            <div class="Form_fild__1MO7S input_name"><div class="Form_label__fcEap">Фамиля Имя Отчество</div>{{ form.name_bus }}</div>
+
+                        <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Город</div>{{ form.sel_city }}</div>
+                            <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Район</div>{{ form.sel_distr }}</div>
+            <div class="Form_fild__1MO7S input_name"><div class="Form_label__fcEap">Категория</div>{{ form.category_bus  }}</div>
+
+        </div>
+        <div class="Form_button__8CAns">
+            <button autofocus="autofocus">Создать анкету</button>
+        </div>
+        <div class="child-back-swarc">
+
+            <div class="Form_fild__1MO7S"><div class="Form_label__fcEap">Фото</div>{{ form.image }}</div>
+                            <div class="Form_fild__1MO7S"><div class="Form_label__fcEap">О себе:</div>{{ form.about_me }}</div>
+
+        </div>
+    </div>
+</form>
+    </body>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Поиск {% endblock %}
+
+{% block content %}
+
+    <body class="mybody">
+    <div class="Neighbors_main__tNG2g">
+        <div class="my_row ">
+            <form method="POST" action="{% url 'filter_search' %}">{% csrf_token %}
+                <div class="fourth-face">
+                    <div class="column">
+                        <div class="pip">
+                            <h4 class="my-2">Город</h4>
+                            <label></label>
+                            <select name="cities">
+                                <option value="" disabled selected required >---</option>
+
+                                <option value="1">Москва</option>
+                                <option value="2">Красноярск</option>
+                                <option value="3">Ачинск</option>
+                                <option value="4">Абакан</option>
+                                <option value="5">Дивногорск</option>
+                                <option value="6">Сосновоборск</option>
+
+                            </select>
+                        </div>
+                        <div class="pip">
+                            <h4 class="my-2">Район</h4>
+
+                            <select name="districts">
+                                <option disabled selected required>---</option>
+
+                                <option value="1">Кировский</option>
+                                <option value="2">Ленинский</option>
+                                <option value="3">Октябрьский</option>
+                                <option value="4">Свердловский</option>
+                                <option value="5">Советский</option>
+                                <option value="6">Центральный</option>
+                                <option value="7">Железнодорожный</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="pip">
+                            <h4 class="my-2">Пол</h4>
+
+                            <select name="gender">
+                                <option style="color: aliceblue" disabled selected required>---</option>
+                                <option value="1">Мужчина</option>
+                                <option value="2">Женщина</option>
+
+                            </select>
+
+                        </div>
+                        <div class="pip" >
+                            <button class="my-2 but-m2" >
+                                Выбрать
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="for-row">
+            {% for serxh_filer_s in serxh_filer %}
+                <div class="my_content">
+
+                    <div class="search-border">
+                        <div class="child-1"><img class="main_img" src="{{ MEDIA_URL }}{{ serxh_filer_s.11 }}" width="176" height="185"></div>
+                        <div class="child-2">
+
+                            <div style="text-decoration: underline;">{{ serxh_filer_s.1 }}</div><!--имя-->
+                            <div>Пол: {{ serxh_filer_s.2 }}</div><!--gender-->
+                            <div>Пол соседа: {{ serxh_filer_s.3 }}</div><!--gender_neighb-->
+                            <div>Город: {{ serxh_filer_s.4 }}</div><!--sel_city-->
+                            <div>Район: {{ serxh_filer_s.5 }}</div><!--sel_distr-->
+                            {% if serxh_filer_s.6 is True %}
+                                <div>Наличие животных: Да</div>
+                            {% else %}
+                                <div>Наличие животных: Нет</div>
+                            {% endif %}
+
+                            {% if serxh_filer_s.7 is True %}
+                                <div>Наличие квартиры: Да</div>
+                            {% else %}
+                                <div>Наличие квартиры: Нет</div>
+                            {% endif %}
+
+                            <div>Отношение к животным: {{ serxh_filer_s.8 }}</div><!--attitude_animals-->
+                            <div>Отношение к курящему: {{ serxh_filer_s.9 }}</div><!--attitude_smok-->
+                            <div>О себе: {{ serxh_filer_s.10 }}</div><!--О себе-->
+
+                        </div>
+
+                        <form action="{% url 'likes' %}" method="post">{% csrf_token %}
+                            <input type="hidden" value="{{ serxh_filer_s.0 }}" name="id_ancket">
+                            <input type="hidden" value="{{ serxh_filer_s.12 }}" name="first">
+                            <input type="hidden" value="{{ request.user.email }}" name="email">
+                            <input type="hidden" value="{{ request.user.username }}" name="second">
+                            <input type="hidden" value="{{ request.user.id }}" name="second_id">
+                            {#                  {{ serxh_filer_s.13 }} !!!!#}
+                            {% if request.user.id == serxh_filer_s.12 %}
+                                {#                        Ваша Анкета!#}
+
+                            {% elif serxh_filer_s.13 != '1' %}
+
+                                <button class="nice-but"  type="submit" >Лайк</button>
+                            {% else %}
+
+                                {#                Вы уже лайкали!#}
+                            {% endif %}
+
+                        </form>
+
+                    </div>
+                </div><!--end my-content-->
+            {% endfor %}
+        </div>
+    </div>
+    </body>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} Успешная Регистрация {% endblock %}
+
+{% block content %}
+
+    <div class="row ">
+        <div class="col-md-8 mx-auto">
+            <h4 class="my-2">Приветствуем нового пользователя {{ new_user.username}}</h4>
+            <p>Вы зарегистрировались в системе.</p>
+               <p>Теперь Вы можете <a href="{% url "login" %}">войти.</a></p>
+
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-8 mx-auto my-3">
+                {% if messages %}
+
+                    {% for message in messages %}
+{#                        https://docs.djangoproject.com/en/3.1/ref/contrib/messages/#}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+
+{#                    {{ message }}#}
+
+
+
+                    {% endfor %}
+
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content%}

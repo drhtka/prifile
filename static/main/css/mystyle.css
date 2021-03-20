@@ -1,0 +1,17 @@
+
+.main {
+    width: 75%;
+    margin: 0 auto;
+    padding-top: 150px;
+}
+.main h1 {
+    font-size: 80px;
+    font-weight: 700;
+}
+.main h1 span {
+    color: #33E0FF;
+}
+.main p {
+    font-size: 15px;
+    font-weight: 400;
+}
