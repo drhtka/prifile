@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for prifile project.
 
@@ -37,9 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.admindocs',
     'main.apps.MainConfig',
     'create_profile.apps.CreateProfileConfig',
     'accounts.apps.AccountsConfig',
+    'city_distr.apps.CityDistrConfig',
+    'mptt',
     'django_cleanup',
 
 ]
@@ -150,3 +154,29 @@ LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
 
 # AUTH_USER_MODEL='users.User'
+
+#django-mptt
+#https://django-mptt.readthedocs.io/en/latest/admin.html
+# default is 10 pixels
+MPTT_ADMIN_LEVEL_INDENT = 20
+
+"""
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True
+            # 'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+    },
+}
+"""

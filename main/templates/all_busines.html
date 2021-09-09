@@ -6,27 +6,28 @@
 <body class="mybody">
 <div class="Neighbors_main__tNG2g">
     <div class="my_row ">
-        <form method="POST" action="{% url 'search_busines' %}">{% csrf_token %}
+        <form method="POST" action="">{% csrf_token %}
             <div class="fourth-face">
             <div class="column">
                 <div class="pip">
                     <h4 class="my-2">Город</h4>
                     <label></label>
-                    <select name="cities">
-                        <option value="" disabled selected required >---</option>
-                        <option value="1">Москва</option>
-                        <option value="2">Красноярск</option>
-                        <option value="3">Ачинск</option>
-                        <option value="4">Абакан</option>
-                        <option value="5">Дивногорск</option>
-                        <option value="6">Сосновоборск</option>
+                    <select name="cities" onchange="changCity(this)" id="search_cities">
+                        {% for allCities_s in allCities %}
 
+                            {% if allCities_s.parent_id == None %}
+                                <option value="{{ allCities_s.id }}">{{ allCities_s.name }}</option><!--рисует джанга-->
+                            {% endif %}
+                        {% endfor %}
                     </select>
+
                 </div>
                 <div class="pip">
                 <h4 class="my-2">Район</h4>
-
-                    <select name="districts">
+                    <select name="regin" id="save_child" class="search_distric">
+                        <option>   Район   </option>
+                    </select>
+                    {% comment %}<select name="districts">
                         <option disabled selected required>---</option>
 
                         <option value="1">Кировский</option>
@@ -36,7 +37,7 @@
                         <option value="5">Советский</option>
                         <option value="6">Центральный</option>
                         <option value="7">Железнодорожный</option>
-                    </select>
+                    </select>{% endcomment %}
             </div>
             </div>
             <div class="column">
@@ -45,14 +46,29 @@
 
                     <div class="column">
 
-                        <input class="input_searc_bus" type="text" name="name_bus" value="" placeholder="Категория бизнеса">
-                    </div>
+{#                        <input class="input_searc_bus" type="text" name="name_bus" value="" placeholder="Категория бизнеса">#}
+{#                        {{ form.profession }}#}
+
+                        <p></p><select class="select-role form-control" type="number" name="role" required placeholder="Категория бизнеса" id="id_profession">
+
+                            <option disabled selected value="0" id="validationTooltip01">Категории</option>
+
+                            {% for distinr_s in distinr %}
+                                <option value="{{ distinr_s.category_bus }}">{{ distinr_s.category_bus }}</option>
+                            {% endfor %}
+
+                        </select>
+                </div>
 
                 </div>
+{#                <div class="pip" >#}
+{#                    <button class="my-2 but-m2" >#}
+{#                        Выбрать#}
+{#                    </button>#}
+{#                </div>#}
                 <div class="pip" >
-                    <button class="my-2 but-m2" >
-                        Выбрать
-                    </button>
+                    <input type="button" class="my-2 but-m2" onclick="searchAnkets()" value="Выбрать">
+
                 </div>
             </div>
             </div>
@@ -65,22 +81,46 @@
 <div class="test">
             <div class="search-border-b">
 
-                <div class="child-1-b"><img class="main_img" src="{{ MEDIA_URL }}{{ serxh_filer_s.5 }}" width="176" height="185"></div>
+                <div class="child-1-b"><img class="main_img" src="{{ MEDIA_URL }}{{ serxh_filer_s.3 }}" width="176" height="185"></div>
                     <div class="child-2-b">
                         <div style="text-decoration: underline;">{{ serxh_filer_s.0 }}</div><!--имя-->
-                        <div>Город: {{ serxh_filer_s.1 }}</div><!--sel_city-->
-                        <div>Район: {{ serxh_filer_s.2 }}</div><!--sel_distr-->
-                        <div>Категория бизнеса: {{ serxh_filer_s.3 }}</div><!--category_bus-->
-                        <div>О себе: {{ serxh_filer_s.4 }}</div><!--О себе-->
+{#                        <div>Город: {{ serxh_filer_s.1 }}</div><!--sel_city-->#}
+{#                        <div>Район: {{ serxh_filer_s.2 }}</div><!--sel_distr-->#}
+                        <div>Категория бизнеса: {{ serxh_filer_s.1 }}</div><!--category_bus-->
+{#                        <div>Категория бизнеса: {{ serxh_filer_s.10 }}</div><!--category_bus-->#}
+                        <div>О себе: {{ serxh_filer_s.2 }}</div><!--О себе-->
+                        <div>Город: {{ serxh_filer_s.6 }}</div><!--город-->
+                        <div>Район: {{ serxh_filer_s.7 }}</div><!--район-->
 
+
+{#                        qqq#}
+{#                        {% for allCities_s_s in allCities.cities_b %}#}
+{#                            {{ allCities_s_s.cities_b }}yyyy#}
+{#                            {% endfor %}#}
+{#                        {{ serxh_filer_s.cities_b.10 }}  ttttt#}
+{#                    {{ allCities.cities_b_name }}#}
+{#!!!!!!!!!!!!!!!!!!!!!!!!!!!#}
+{#                        {% load mptt_tags %}#}
+{#                        <ul>#}
+{#                            {% recursetree allCities %}#}
+{#                                <li>#}
+{#                                    {{ node.name }}#}
+{#                                    {% if not node.is_leaf_node %}#}
+{#                                        <ul class="children">#}
+{#                                            {{ cities_b_name }}#}
+{#                                        </ul>#}
+{#                                    {% endif %}#}
+{#                                </li>#}
+{#                            {% endrecursetree %}#}
+{#                        </ul>#}
                     </div>
                         <form action="{% url 'likes_busines' %}" method="post">{% csrf_token %}
-                            <input type="hidden" value="{{ serxh_filer_s.7 }}" name="id_ancket">
-                            <input type="hidden" value="{{ serxh_filer_s.6 }}" name="first">
+                            <input type="hidden" value="{{ serxh_filer_s.5 }}" name="id_ancket">
+                            <input type="hidden" value="{{ serxh_filer_s.4 }}" name="first">
                         <input type="hidden" value="{{ request.user.username }}" name="second">
                             <input type="hidden" value="{{ request.user.email }}" name="email">
                             <input type="hidden" value="{{ request.user.id }}" name="second_id">
-                            {% if request.user.id == serxh_filer_s.6 %}
+                            {% if request.user.id == serxh_filer_s.4 %}
                                 <div>Ваша анкета!</div>
                             {% elif serxh_filer_s.8 != '1' %}
                          <button class="nice-but" type="submit">Лайк</button>
@@ -94,5 +134,78 @@
     {% endfor %}
 </div>
 </div>
+<script>
+    function changCity(my_this){
+        {#// сюда прилетают выбранны город и вся выборку#}
+
+
+        fetch('/tree_form_b?id=' + my_this.value)
+            // Handle success
+            {#.then(response => console.log(response.json))//ловим с дефа ответ данные all_child[0]#}
+            .then(response => response.json())//ловим с дефа ответ данные dict2
+            //.then(response => console.log(response))
+            .then(data => saveChild(data))//передаем в переменной data всю выборку из dict2.json
+            // сюда прилетают выбранны город и вся выборка районов
+            //console.log('data-b-118')
+            //console.log(saveChild(data))
+        //print data to console
+// .then(my_state => console.log(this.state.products))
+// console.log(this.state.products)
+
+    }
+    function saveChild(data){
+// сюда прилетают все районы связанные с быранным городом
+        //console.log(data.data)
+
+        save_child = ""
+        for (let item of data.data){ // перебираем все района города
+            save_child += "<option value='"+ item.id +"'>" + item.name + "</option>"  //+= накапливаем id
+
+        }
+            {#console.log('save_child')#}
+            {#console.log(save_child)#}
+        document.getElementById('save_child').innerHTML = save_child
+    }
+
+    function searchAnkets(){
+        searchcities = document.getElementById('search_cities').value
+        searchdistrics = document.getElementsByClassName('search_distric')[0].value
+        seacrprof = document.getElementById('id_profession').value
+        console.log('3 consol llog-b')
+        console.log(searchcities)
+        console.log(searchdistrics)
+        console.log(seacrprof)
+        {#console.log(seacrprof)#}
+        {#searchancets = document.getElementById('save_child').values#}
+
+        if(searchcities == '1') {
+            alert('не выбран город')
+            return false
+        }
+        if (searchdistrics == 'Район') {
+            alert('не выбран район')
+            return false
+        }
+        if (seacrprof == '0') {
+            alert('не выбран Категории')
+            return false
+        }
+
+
+        fetch('/search_fetch_b?id=' + searchcities + '&distr=' + searchdistrics + '&prof=' + seacrprof)
+            // Handle success
+            .then(response => response.text())//ловим с дефа ответ данные all_child[0]
+            .then(data => getFilterData(data))//передаем в переменной data всю выборку из all_child[0].json
+
+    }
+    function getFilterData(data){
+        console.log('data-b-148')
+        console.log(data)
+        let contentblock = ''
+        document.getElementsByClassName('for-row')[0].innerHTML = data
+        console.log('contentblock-b')
+        console.log(contentblock)
+    }
+</script>
 </body>
 {% endblock %}

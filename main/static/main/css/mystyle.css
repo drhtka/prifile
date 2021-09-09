@@ -15,8 +15,9 @@ body{
     margin: 0 auto;
     font-family: 'Comfortaa', sans-serif;
     color: #ffffff;
-
+    /*overflow:  hidden;*/
 }
+html { overflow-x: hidden; }
 .mybody{
     background-image: url('/static/main/img/back.jpg') ;
     background-repeat: round;
@@ -24,6 +25,7 @@ body{
     font-family: 'Comfortaa', sans-serif;
     color: saddlebrown;
     font-weight: bolder;
+    /*height: 50px !important;*/
 }
 .mybody-b{
     background-image: url('/static/main/img/back.jpg') ;
@@ -102,7 +104,7 @@ body{
     justify-content: space-between;
 }
 .column{
-    padding: 1% 0 2% 0px;
+    padding: 0% 0 2% 0px;
 }
 .my-2{
     margin: 0 auto;
@@ -424,6 +426,10 @@ button.dropbtn{
     background: #5dc8e5;
     padding: 15px 50px;
 }
+.Form_button__8CAns-in{
+    background: #5dc8e5;
+    padding: 15px 50px;
+}
 
 .Form_button__8CAns-b{
     padding: 0;
@@ -448,19 +454,31 @@ button.dropbtn{
     margin-left: 40%;
 }
 .input_name input{
+    width: 96%;
+    border-radius: 10px;
+    padding: 5px;
+    font-weight: 700;
+}
+
+select.input_name{
     width: 100%;
     border-radius: 10px;
     padding: 5px;
     font-weight: 700;
 }
+
 .Form_label__fcEap{
     text-align: center;
     font-size: 18px;
     font-weight: bold;
     text-shadow: #5dc8e5 0 5px 5px;
 }
+textarea#id_about_me{
+    resize: none !important; /* Запрещаем изменять размер */
+}
 .body_font{
     color: #ffffff;
+
 }
 .field_select select{
     width: 100%;
@@ -477,7 +495,7 @@ button.dropbtn{
     list-style-type: none !important;
 }
 input#id_image{
-    width: 39%;
+    width: 59%;
 }
 
 .form-control-reg{

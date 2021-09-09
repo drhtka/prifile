@@ -10,22 +10,87 @@
         <div class="child-back-swarc">
 
             <div class="Form_fild__1MO7S input_name"><div class="Form_label__fcEap">Фамиля Имя Отчество</div>{{ form.name_bus }}</div>
-
+{#            <div class="Form_fild__1MO7S input_name"><div class="Form_label__fcEap">profession</div></div>#}
+{#            <div class="Form_fild__1MO7S input_name"><div class="Form_label__fcEap">#}
+{#                <label for="title">Название  специалности</label>#}
+{#                <input type="text" name="profession" class="form-control" id="title" value="" required>#}
+{#            </div></div>#}
+            {% comment %}<div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Город</div>{{ form.sel_city }}</div>
                         <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Город</div>{{ form.sel_city }}</div>
-                            <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Район</div>{{ form.sel_distr }}</div>
-            <div class="Form_fild__1MO7S input_name"><div class="Form_label__fcEap">Категория</div>{{ form.category_bus  }}</div>
 
+
+                            <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Район</div>{{ form.sel_distr }}</div>{% endcomment %}
+            <div class="Form_fild__1MO7S input_name"><div class="Form_label__fcEap">Категория</div>{{ form.category_bus  }}</div>
+        {{ form.category_bus.error }}
+<!--Город-->
+            {% comment %}{% endcomment %}
+            <div class="column">
+                <div class="pip Form_fild__1MO7S field_select">
+                    <h4 class="my-2 Form_label__fcEap">Город</h4>
+                    <label></label>
+                    <select name="cities" onchange="changCity(this)" id="search_cities" class="input_name">
+                        {% for allCities_s in allCities %}
+                            <option value="{{ allCities_s.id }}">{{ allCities_s.name }}</option><!--рисует джанга-->
+
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="pip Form_fild__1MO7S field_select">
+                    <h4 class="my-2 Form_label__fcEap">Район</h4>
+                    <select name="regin" id="save_child" class="search_distric input_name"> <!--save_child здесь в option  все районы -->
+                        <option value="0">   Район   </option>
+                    </select>
+                </div>
+            </div>
+
+            <!--Город-->
         </div>
         <div class="Form_button__8CAns">
-            <button autofocus="autofocus">Создать анкету</button>
+{#            <button autofocus="autofocus">Создать анкету</button>#}
+            <input type="submit" autofocus="autofocus" value="Создать анкету" onclick="disButton()" class="Form_button__8CAns-in">
         </div>
         <div class="child-back-swarc">
 
             <div class="Form_fild__1MO7S"><div class="Form_label__fcEap">Фото</div>{{ form.image }}</div>
-                            <div class="Form_fild__1MO7S"><div class="Form_label__fcEap">О себе:</div>{{ form.about_me }}</div>
+                            <div class="Form_fild__1MO7S"><div class="Form_label__fcEap res_non">О себе:</div>{{ form.about_me }}</div>
 
         </div>
     </div>
 </form>
+<script>
+    function changCity(my_this){
+        // сюда прилетает id выбранного города в value
+        console.log(my_this.value)
+
+        fetch('/tree_form_b?id=' + my_this.value)  // передаём id  который в value на деф ф джанго
+            // Handle success
+            {#.then(response => console.log(response))#}
+            .then(response => response.json())//ловим с дефа ответ данные dict1 и конвертируем в json
+
+            .then(data => saveChild(data))//передаем в функцию с переменной data всю выборку из dict1.json
+            {#console.log('data-n-126')#}
+            {#console.log(saveChild(data))#}
+            {#.then(response => console.log(response.json))#}
+    }
+    function saveChild(data){
+// сюда прилетают все районы связанные с выбранным городом для селекта т.е. выпад списка
+        console.log(data.data)
+
+        save_child = ""
+        for (let item of data.data){ // перебираем все района города циклом
+            save_child += "<option value='"+ item.id +"'>" + item.name + "</option>"  //+= накапливаем для передачи в селект в выпад список
+        }
+        document.getElementById('save_child').innerHTML = save_child // присваиваем айдшнику все значеие переменной
+    }
+    function disButton(){
+        console.log('11')
+        console.log(document.getElementById('save_child').value)
+        if (document.getElementById('save_child').value == '0') {
+            alert('не выбран Категории')
+            return false
+        }
+
+    }
+</script>
     </body>
 {% endblock %}

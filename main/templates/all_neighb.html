@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load mptt_tags %}
 {% block title %} Поиск {% endblock %}
 
 {% block content %}
@@ -7,37 +8,27 @@
 <body class="mybody">
 <div class="Neighbors_main__tNG2g">
     <div class="my_row ">
-        <form method="POST" action="{% url 'filter_search' %}">{% csrf_token %}
-            <div class="fourth-face">
+
+            <form method="POST" action="">{% csrf_token %}
+
+                <div class="fourth-face">
             <div class="column">
                 <div class="pip">
                     <h4 class="my-2">Город</h4>
                     <label></label>
-                    <select name="cities">
-                        <option value="" disabled selected required >---</option>
+                    <select name="cities" onchange="changCity(this)" id="search_cities">
+                        {% for allCities_s in allCities %}
 
-                        <option value="1">Москва</option>
-                        <option value="2">Красноярск</option>
-                        <option value="3">Ачинск</option>
-                        <option value="4">Абакан</option>
-                        <option value="5">Дивногорск</option>
-                        <option value="6">Сосновоборск</option>
-
+                            {% if allCities_s.parent_id == None %}
+                                <option value="{{ allCities_s.id }}">{{ allCities_s.name }}</option><!--рисует джанга-->
+                            {% endif %}
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="pip">
                 <h4 class="my-2">Район</h4>
-
-                    <select name="districts">
-                        <option disabled selected required>---</option>
-
-                        <option value="1">Кировский</option>
-                        <option value="2">Ленинский</option>
-                        <option value="3">Октябрьский</option>
-                        <option value="4">Свердловский</option>
-                        <option value="5">Советский</option>
-                        <option value="6">Центральный</option>
-                        <option value="7">Железнодорожный</option>
+                    <select name="regin" id="save_child" class="search_distric"> <!--save_child здесь в option  все районы -->
+                        <option>   Район   </option>
                     </select>
             </div>
             </div>
@@ -45,7 +36,7 @@
                 <div class="pip">
                     <h4 class="my-2">Пол</h4>
 
-                    <select name="gender">
+                    <select name="gender" id="seacrh_gender">
                         <option style="color: aliceblue" disabled selected required>---</option>
                         <option value="1">Мужчина</option>
                         <option value="2">Женщина</option>
@@ -54,55 +45,56 @@
 
                 </div>
                 <div class="pip" >
-                    <button class="my-2 but-m2" >
-                        Выбрать
-                    </button>
+                    <input type="button" class="my-2 but-m2" onclick="searchAnkets()" value="Выбрать">
+
+
                 </div>
             </div>
             </div>
             </form>
-        </div>
 
-
+    </div>
 <div class="for-row">
+
     {% for serxh_filer_s in serxh_filer %}
         <div class="my_content">
 
             <div class="search-border">
-                <div class="child-1"><img class="main_img" src="{{ MEDIA_URL }}{{ serxh_filer_s.11 }}" width="176" height="185"></div>
+                <div class="child-1"><img class="main_img" src="{{ MEDIA_URL }}{{ serxh_filer_s.9 }}" width="176" height="185"></div>
                 <div class="child-2">
-           
+
                 <div style="text-decoration: underline;">{{ serxh_filer_s.1 }}</div><!--имя-->
                 <div>Пол: {{ serxh_filer_s.2 }}</div><!--gender-->
                 <div>Пол соседа: {{ serxh_filer_s.3 }}</div><!--gender_neighb-->
-                <div>Город: {{ serxh_filer_s.4 }}</div><!--sel_city-->
-                <div>Район: {{ serxh_filer_s.5 }}</div><!--sel_distr-->
-                {% if serxh_filer_s.6 is True %}
+{#                <div>Город: {{ serxh_filer_s.4 }}</div><!--sel_city-->#}
+{#                <div>Район: {{ serxh_filer_s.5 }}</div><!--sel_distr-->#}
+                {% if serxh_filer_s.4 is True %}
                     <div>Наличие животных: Да</div>
                 {% else %}
                     <div>Наличие животных: Нет</div>
                 {% endif %}
 
-                {% if serxh_filer_s.7 is True %}
+                {% if serxh_filer_s.5 is True %}
                     <div>Наличие квартиры: Да</div>
                 {% else %}
                     <div>Наличие квартиры: Нет</div>
                 {% endif %}
 
-                <div>Отношение к животным: {{ serxh_filer_s.8 }}</div><!--attitude_animals-->
-                <div>Отношение к курящему: {{ serxh_filer_s.9 }}</div><!--attitude_smok-->
-                <div>О себе: {{ serxh_filer_s.10 }}</div><!--О себе-->
-
+                <div>Отношение к животным: {{ serxh_filer_s.6 }}</div><!--attitude_animals-->
+                <div>Отношение к курящему: {{ serxh_filer_s.7 }}</div><!--attitude_smok-->
+                <div>О себе: {{ serxh_filer_s.8 }}</div><!--О себе-->
+                    <div>Город: {{ serxh_filer_s.11 }}</div><!--О себе-->
+                    <div>Район: {{ serxh_filer_s.12 }}</div><!--О себе-->
                 </div>
 
         <form action="{% url 'likes' %}" method="post">{% csrf_token %}
             <input type="hidden" value="{{ serxh_filer_s.0 }}" name="id_ancket">
-            <input type="hidden" value="{{ serxh_filer_s.12 }}" name="first">
+            <input type="hidden" value="{{ serxh_filer_s.10 }}" name="first">
             <input type="hidden" value="{{ request.user.email }}" name="email">
         <input type="hidden" value="{{ request.user.username }}" name="second">
             <input type="hidden" value="{{ request.user.id }}" name="second_id">
 {#                  {{ serxh_filer_s.13 }} !!!!#}
-            {% if request.user.id == serxh_filer_s.12 %}
+            {% if request.user.id == serxh_filer_s.10 %}
                         Ваша Анкета!
 
             {% elif serxh_filer_s.13 != '1' %}
@@ -118,7 +110,64 @@
             </div>
         </div><!--end my-content-->
     {% endfor %}
+    {% comment %}{% endcomment %}
 </div>
 </div>
+<script>
+function changCity(my_this){
+    // сюда прилетает id выбранного города в value
+    {#console.log(my_this.value)#}
+
+fetch('/tree_form?id=' + my_this.value)  // передаём id  который в value на деф ф джанго
+    // Handle success
+    {#.then(response => console.log(response))#}
+    .then(response => response.json())//ловим с дефа ответ данные dict1 и конвертируем в json
+
+    .then(data => saveChild(data))//передаем в функцию с переменной data всю выборку из dict1.json
+    {#console.log('data-n-126')#}
+    {#console.log(saveChild(data))#}
+    .then(response => console.log(response.json))
+
+}
+function saveChild(data){
+// сюда прилетают все районы связанные с выбранным городом для селекта т.е. выпад списка
+    {#console.log(data.data)#}
+
+    save_child = ""
+    for (let item of data.data){ // перебираем все района города циклом
+        save_child += "<option value='"+ item.id +"'>" + item.name + "</option>"  //+= накапливаем для передачи в селект в выпад список
+
+    }
+
+    document.getElementById('save_child').innerHTML = save_child // присваиваем айдшнику все значеие переменной
+}
+
+function searchAnkets(){
+    // поик анкет
+    searchcities = document.getElementById('search_cities').value //  выбранным городом
+    searchdistrics = document.getElementsByClassName('search_distric')[0].value //  выбранным район
+    seacrhgender = document.getElementById('seacrh_gender').value //  выбранным пол
+    console.log('3 consol llog')
+    console.log(seacrhgender)
+    console.log(searchdistrics)
+    console.log(searchcities)
+    {#searchancets = document.getElementById('save_child').values#}
+    // методом get отправлеям на деф аяксом три параметра запроса
+    fetch('/search_fetch?id=' + searchcities + '&distr=' + searchdistrics + '&ender=' + seacrhgender)
+        // Handle success
+        .then(response => response.text())//ловим с дефа ответ данные з джанго шаблона test.html
+        .then(data => getFilterData(data))//передаем в функцию с переменной data всю выборку из test.html.txt
+
+}
+function getFilterData(data){
+    //функция котороая выводит все полученные отфильтрованные данные
+    console.log('data')
+    console.log(data)
+    let contentblock = ''
+    document.getElementsByClassName('for-row')[0].innerHTML = data
+    console.log('contentblock')
+    console.log(contentblock)
+}
+</script>
 </body>
 {% endblock %}

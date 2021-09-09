@@ -1,0 +1,63 @@
+
+
+{% block content %}
+    111111111111
+{#    {{ filter_ne }}#}
+<div class="for-row">
+    {% for serxh_filer_s in filter_ne %}
+        <div class="my_content">
+
+            <div class="search-border">
+                <div class="child-1"><img class="main_img" src="{{ MEDIA_URL }}{{ serxh_filer_s.9 }}" width="176" height="185"></div>
+                <div class="child-2">
+
+                    <div style="text-decoration: underline;">{{ serxh_filer_s.1 }}</div><!--имя-->
+                    <div>Пол: {{ serxh_filer_s.2 }}</div><!--gender-->
+                    <div>Пол соседа: {{ serxh_filer_s.3 }}</div><!--gender_neighb-->
+{#                    <div>Город: {{ serxh_filer_s.4 }}</div><!--sel_city-->#}
+{#                    <div>Район: {{ serxh_filer_s.5 }}</div><!--sel_distr-->#}
+                    {% if serxh_filer_s.4 is True %}
+                        <div>Наличие животных: Да</div>
+                    {% else %}
+                        <div>Наличие животных: Нет</div>
+                    {% endif %}
+
+                    {% if serxh_filer_s.5 is True %}
+                        <div>Наличие квартиры: Да</div>
+                    {% else %}
+                        <div>Наличие квартиры: Нет</div>
+                    {% endif %}
+
+                    <div>Отношение к животным: {{ serxh_filer_s.6 }}</div><!--attitude_animals-->
+                    <div>Отношение к курящему: {{ serxh_filer_s.7 }}</div><!--attitude_smok-->
+                    <div>О себе: {{ serxh_filer_s.8 }}</div><!--О себе-->
+                    <div>Город: {{ serxh_filer_s.11 }}</div><!--О себе-->
+                    <div>Район: {{ serxh_filer_s.12 }}</div><!--О себе-->
+                </div>
+
+                <form action="{% url 'likes' %}" method="post">{% csrf_token %}
+                    <input type="hidden" value="{{ serxh_filer_s.0 }}" name="id_ancket">
+                    <input type="hidden" value="{{ serxh_filer_s.10 }}" name="first">
+                    <input type="hidden" value="{{ request.user.email }}" name="email">
+                    <input type="hidden" value="{{ request.user.username }}" name="second">
+                    <input type="hidden" value="{{ request.user.id }}" name="second_id">
+                    {#                  {{ serxh_filer_s.13 }} !!!!#}
+                    {% if request.user.id == serxh_filer_s.10 %}
+                        Ваша Анкета!
+
+                    {% elif serxh_filer_s.11 != '1' %}
+
+                        <button class="nice-but"  type="submit" >Лайк</button>
+                    {% else %}
+
+                        Вы уже лайкнули!
+                    {% endif %}
+
+                </form>
+
+            </div>
+        </div><!--end my-content-->
+    {% endfor %}
+</div>
+</div>
+{% endblock content %}

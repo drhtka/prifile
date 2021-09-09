@@ -14,9 +14,71 @@
                                             <div>{{ form.username.errors}}</div>
                 <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Пол</div>{{ form.gender }}</div>
                     <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Пол сожителя</div>{{ form.gender_neighb }}</div>
-                        <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Город</div>{{ form.sel_city }}</div>
-                            <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Район</div>{{ form.sel_distr }}</div>
+            <div class="Form_fild__1MO7S field_select">
+            <select name="cities" onchange="changCity(this)" id="search_cities">
+                {% for allCities_s in allCities %}
+                    <div class="Form_label__fcEap">Город<option value="{{ allCities_s.id }}">{{ allCities_s.name }}</option></div><!--рисует джанга-->
+                {% endfor %}
+            </select></div>
+
+
+                            <div class="Form_fild__1MO7S field_select">
+                                            <select name="regin" id="save_child" class="search_distric"> <!--save_child здесь в option  все районы -->
+                                                <div class="Form_label__fcEap"><option>   Район   </option></div>
+                                            </select>
+                            </div>
+{#                            <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Район</div>{{ form.sel_distr }}</div>#}
+
             <div class="Form_fild__1MO7S"><div class="Form_label__fcEap size-im-n">Фото</div>{{ form.image }}</div>
+{#            <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Город</div>{{ form.cities }}</div>#}
+{#            <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap" >Район</div>{{ form.districts_tree }}</div>#}
+
+{#            {{ form.cities }}#}
+{##}
+{#            {% for allCities_s in allCities %}#}
+{#                {{ allCities_s.name }} 1111#}
+{#            {% endfor %}#}
+{#        #}
+            <!--Город-->
+            {% comment %}<div class="column">
+                <div class="pip">
+                    <h4 class="my-2">Город</h4>
+                    <label></label>
+                    <select name="cities" onchange="changCity(this)" id="search_cities">
+                        {% for allCities_s in allCities %}
+                                <option value="{{ allCities_s.id }}">{{ allCities_s.name }}</option><!--рисует джанга-->
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="pip">
+                    <h4 class="my-2">Район</h4>
+                    <select name="regin" id="save_child" class="search_distric"> <!--save_child здесь в option  все районы -->
+                        <option>   Район   </option>
+                    </select>
+                </div>
+            </div>{% endcomment %}
+            <!--Город-->
+{#                                    qqq#}
+{#                                    {% for allCities_s_s in allCities %}#}
+{#                                        {{ allCities_s_s.name }}yyyy#}
+{#                                        {% endfor %}#}
+{##}
+{#                                {{ allCities.cities_b_name }}#}
+{#            !!!!!!!!!!!!!!!!!!!!!!!!!!!#}
+{#                                    {% load mptt_tags %}#}
+{#                                    <ul>#}
+{#                                        {% recursetree allCities %}#}
+{#                                            <li>#}
+{#                                                {{ node.name }}#}
+{#                                                {% if not node.is_leaf_node %}#}
+{#                                                    <ul class="children">#}
+{#                                                        {{ cities }}#}
+{#                                                    </ul>#}
+{#                                                {% endif %}#}
+{#                                            </li>#}
+{#                                        {% endrecursetree %}#}
+{#                                    </ul>#}
+{#            {{ category }}#}
                                                                      {# .as_p что бы формы были как строки #}
         </div>
         <div class="Form_button__8CAns">
@@ -25,12 +87,43 @@
         <div class="child-back-swarc">
             <div class="Form_fild__1MO7S"><div class="Form_label__fcEap">Наличие животных</div>{{ form.presence_animals }}</div>
                 <div class="Form_fild__1MO7S"><div class="Form_label__fcEap">Наличие квартиры</div>{{ form.presence_flat }}</div>
-                    <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Отношение к наличию домашних животных в доме</div>{{ form.attitude_animals }}</div>
+
+                    <div class="Form_fild__1MO7S field_select">
+                        <div class="Form_label__fcEap">Отношение к наличию домашних животных в доме</div>
+                    {{ form.attitude_animals }}</div>
+
                         <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Отношение к курящему сожителю</div>{{ form.attitude_smok }}</div>
                             <div class="Form_fild__1MO7S"><div class="Form_label__fcEap">О себе:</div>{{ form.about_me }}</div>
 
         </div>
     </div>
 </form>
+
+    <script>
+        function changCity(my_this){
+            // сюда прилетает id выбранного города в value
+            {#console.log(my_this.value)#}
+
+            fetch('/tree_form?id=' + my_this.value)  // передаём id  который в value на деф ф джанго
+                // Handle success
+                {#.then(response => console.log(response))#}
+                .then(response => response.json())//ловим с дефа ответ данные dict1 и конвертируем в json
+
+                .then(data => saveChild(data))//передаем в функцию с переменной data всю выборку из dict1.json
+                {#console.log('data-n-126')#}
+                {#console.log(saveChild(data))#}
+                .then(response => console.log(response.json))
+        }
+        function saveChild(data){
+// сюда прилетают все районы связанные с выбранным городом для селекта т.е. выпад списка
+            {#console.log(data.data)#}
+
+            save_child = ""
+            for (let item of data.data){ // перебираем все района города циклом
+                save_child += "<option value='"+ item.id +"'>" + item.name + "</option>"  //+= накапливаем для передачи в селект в выпад список
+            }
+            document.getElementById('save_child').innerHTML = save_child // присваиваем айдшнику все значеие переменной
+        }
+    </script>
     </body>
 {% endblock %}
