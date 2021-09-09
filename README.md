@@ -7,6 +7,6 @@
 * Лайки и сообщение системы при совместном лайке
 
 
-## Технологии
+### Технологии
 <p>HTML - CSS - JS - DJANGO</p>
 <p>pip install requirements.txt</p>
