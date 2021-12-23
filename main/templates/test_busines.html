@@ -1,0 +1,38 @@
+{% block content %}
+    <div class="for-row">
+        {% for serxh_filer_s in serxh_filer %}
+            <div class="my_content">
+                <div class="test">
+                    <div class="search-border-b">
+
+                        <div class="child-1-b"><img class="main_img" src="{{ MEDIA_URL }}{{ serxh_filer_s.3 }}" width="176" height="185"></div>
+                        <div class="child-2-b">
+                            <div style="text-decoration: underline;">{{ serxh_filer_s.0 }}</div><!--имя-->
+{#                            <div>Город: {{ serxh_filer_s.1 }}</div><!--sel_city-->#}
+{#                            <div>Район: {{ serxh_filer_s.2 }}</div><!--sel_distr-->#}
+                            <div>Категория бизнеса: {{ serxh_filer_s.1 }}</div><!--category_bus-->
+                            <div>О себе: {{ serxh_filer_s.2 }}</div><!--О себе-->
+                            <div>Город: {{ serxh_filer_s.6 }}</div><!--город-->
+                            <div>Район: {{ serxh_filer_s.7 }}</div><!--район-->
+
+                        </div>
+                        <form action="{% url 'likes_busines' %}" method="post">{% csrf_token %}
+                            <input type="hidden" value="{{ serxh_filer_s.5 }}" name="id_ancket">
+                            <input type="hidden" value="{{ serxh_filer_s.4 }}" name="first">
+                            <input type="hidden" value="{{ request.user.username }}" name="second">
+                            <input type="hidden" value="{{ request.user.email }}" name="email">
+                            <input type="hidden" value="{{ request.user.id }}" name="second_id">
+                            {% if request.user.id == serxh_filer_s.4 %}
+                                <div>Ваша анкета!</div>
+                            {% elif serxh_filer_s.8 != '1' %}
+                                <button class="nice-but" type="submit">Лайк</button>
+                            {% else %}
+                                <div>Вы лайкнули</div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div><!--end my-content-->
+        {% endfor %}
+    </div>
+{% endblock %}

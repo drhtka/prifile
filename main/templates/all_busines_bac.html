@@ -6,7 +6,7 @@
 <body class="mybody">
 <div class="Neighbors_main__tNG2g">
     <div class="my_row ">
-        <form method="POST" action="">{% csrf_token %}
+        <form method="POST" action="{% url 'search_busines' %}">{% csrf_token %}
             <div class="fourth-face">
             <div class="column">
                 <div class="pip">
@@ -14,6 +14,7 @@
                     <label></label>
                     <select name="cities" onchange="changCity(this)" id="search_cities">
                         {% for allCities_s in allCities %}
+
                             {% if allCities_s.parent_id == None %}
                                 <option value="{{ allCities_s.id }}">{{ allCities_s.name }}</option><!--рисует джанга-->
                             {% endif %}
@@ -23,7 +24,7 @@
                 </div>
                 <div class="pip">
                 <h4 class="my-2">Район</h4>
-                    <select name="regin" id="save_child" class="search_distric">
+                    <select name="regin" id="save_child" class="search_distric" >
                         <option>   Район   </option>
                     </select>
                     {% comment %}<select name="districts">
@@ -80,16 +81,16 @@
 <div class="test">
             <div class="search-border-b">
 
-                <div class="child-1-b"><img class="main_img" src="{{ MEDIA_URL }}{{ serxh_filer_s.3 }}" width="176" height="185"></div>
+                <div class="child-1-b"><img class="main_img" src="{{ MEDIA_URL }}{{ serxh_filer_s.5 }}" width="176" height="185"></div>
                     <div class="child-2-b">
                         <div style="text-decoration: underline;">{{ serxh_filer_s.0 }}</div><!--имя-->
-{#                        <div>Город: {{ serxh_filer_s.1 }}</div><!--sel_city-->#}
-{#                        <div>Район: {{ serxh_filer_s.2 }}</div><!--sel_distr-->#}
-                        <div>Категория бизнеса: {{ serxh_filer_s.1 }}</div><!--category_bus-->
-{#                        <div>Категория бизнеса: {{ serxh_filer_s.10 }}</div><!--category_bus-->#}
-                        <div>О себе: {{ serxh_filer_s.2 }}</div><!--О себе-->
-                        <div>Город: {{ serxh_filer_s.6 }}</div><!--город-->
-                        <div>Район: {{ serxh_filer_s.7 }}</div><!--район-->
+                        <div>Город: {{ serxh_filer_s.1 }}</div><!--sel_city-->
+                        <div>Район: {{ serxh_filer_s.2 }}</div><!--sel_distr-->
+                        <div>Категория бизнеса: {{ serxh_filer_s.3 }}</div><!--category_bus-->
+                        <div>Категория бизнеса: {{ serxh_filer_s.10 }}</div><!--category_bus-->
+                        <div>О себе: {{ serxh_filer_s.4 }}</div><!--О себе-->
+                        <div>Город: {{ serxh_filer_s.8 }}</div><!--город-->
+                        <div>Район: {{ serxh_filer_s.9 }}</div><!--район-->
 
 
 {#                        qqq#}
@@ -114,12 +115,12 @@
 {#                        </ul>#}
                     </div>
                         <form action="{% url 'likes_busines' %}" method="post">{% csrf_token %}
-                            <input type="hidden" value="{{ serxh_filer_s.5 }}" name="id_ancket">
-                            <input type="hidden" value="{{ serxh_filer_s.4 }}" name="first">
+                            <input type="hidden" value="{{ serxh_filer_s.7 }}" name="id_ancket">
+                            <input type="hidden" value="{{ serxh_filer_s.6 }}" name="first">
                         <input type="hidden" value="{{ request.user.username }}" name="second">
                             <input type="hidden" value="{{ request.user.email }}" name="email">
                             <input type="hidden" value="{{ request.user.id }}" name="second_id">
-                            {% if request.user.id == serxh_filer_s.4 %}
+                            {% if request.user.id == serxh_filer_s.6 %}
                                 <div>Ваша анкета!</div>
                             {% elif serxh_filer_s.8 != '1' %}
                          <button class="nice-but" type="submit">Лайк</button>
@@ -137,24 +138,24 @@
     function changCity(my_this){
         {#// сюда прилетают выбранны город и вся выборку#}
 
-
+        console.log('1')
         fetch('/tree_form_b?id=' + my_this.value)
             // Handle success
-            {#.then(response => console.log(response.json))//ловим с дефа ответ данные all_child[0]#}
+            //.then(response => console.log(response.json))//ловим с дефа ответ данные all_child[0]
             .then(response => response.json())//ловим с дефа ответ данные dict2
             //.then(response => console.log(response))
             .then(data => saveChild(data))//передаем в переменной data всю выборку из dict2.json
             // сюда прилетают выбранны город и вся выборка районов
             //console.log('data-b-118')
-            //console.log(saveChild(data))
-        //print data to console
+
+
 // .then(my_state => console.log(this.state.products))
 // console.log(this.state.products)
 
     }
     function saveChild(data){
 // сюда прилетают все районы связанные с быранным городом
-        //console.log(data.data)
+        console.log(data.data)
 
         save_child = ""
         for (let item of data.data){ // перебираем все района города
@@ -169,15 +170,12 @@
     function searchAnkets(){
         searchcities = document.getElementById('search_cities').value
         searchdistrics = document.getElementsByClassName('search_distric')[0].value
-        seacrprof = document.getElementById('id_profession').value
+        seacrhprof = document.getElementById('id_profession').value
         console.log('3 consol llog-b')
         console.log(searchcities)
         console.log(searchdistrics)
-        console.log(seacrprof)
-        {#console.log(seacrprof)#}
-        {#searchancets = document.getElementById('save_child').values#}
-
-        if(searchcities == '1') {
+        console.log(seacrhprof)
+        if(document.getElementById('search_cities').value == '1') {
             alert('не выбран город')
             return false
         }
@@ -185,13 +183,13 @@
             alert('не выбран район')
             return false
         }
-        if (seacrprof == '0') {
+        if (seacrhprof == 0) {
             alert('не выбран Категории')
             return false
         }
 
-
-        fetch('/search_fetch_b?id=' + searchcities + '&distr=' + searchdistrics + '&prof=' + seacrprof)
+        {#searchancets = document.getElementById('save_child').values#}
+        fetch('/search_fetch_b?id=' + searchcities + '&distr=' + searchdistrics+ '&prof=' + seacrhprof
             // Handle success
             .then(response => response.text())//ловим с дефа ответ данные all_child[0]
             .then(data => getFilterData(data))//передаем в переменной data всю выборку из all_child[0].json

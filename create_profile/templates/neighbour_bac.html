@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Сожители{% endblock title %}
+{% block content %}
+    <body class="mybody body_font">
+<form method="post" action="." enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="back-swarc">
+        <div class="child-back-swarc">
+
+            <div class="Form_fild__1MO7S input_name"><div class="Form_label__fcEap">Фамиля Имя Отчество</div>{{ form.name }}</div>
+            <input type="hidden" {{ form.username }}>
+                                            <div>{{ form.username.errors}}</div>
+                <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Пол</div>{{ form.gender }}</div>
+                    <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Пол сожителя</div>{{ form.gender_neighb }}</div>
+                        <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Город</div>{{ form.sel_city }}</div>
+                            <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Район</div>{{ form.sel_distr }}</div>
+            <div class="Form_fild__1MO7S"><div class="Form_label__fcEap size-im-n">Фото</div>{{ form.image }}</div>
+            <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Город</div>{{ form.cities }}</div>
+            <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap" >Район</div>{{ form.districts_tree }}</div>
+                                                                     {# .as_p что бы формы были как строки #}
+        </div>
+        <div class="Form_button__8CAns">
+            <button autofocus="autofocus">Создать анкету</button>
+        </div>
+        <div class="child-back-swarc">
+            <div class="Form_fild__1MO7S"><div class="Form_label__fcEap">Наличие животных</div>{{ form.presence_animals }}</div>
+                <div class="Form_fild__1MO7S"><div class="Form_label__fcEap">Наличие квартиры</div>{{ form.presence_flat }}</div>
+                    <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Отношение к наличию домашних животных в доме</div>{{ form.attitude_animals }}</div>
+                        <div class="Form_fild__1MO7S field_select"><div class="Form_label__fcEap">Отношение к курящему сожителю</div>{{ form.attitude_smok }}</div>
+                            <div class="Form_fild__1MO7S"><div class="Form_label__fcEap">О себе:</div>{{ form.about_me }}</div>
+
+        </div>
+    </div>
+</form>
+    </body>
+{% endblock %}
